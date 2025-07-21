@@ -12,18 +12,22 @@ const Product = () => {
   });
 
   const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}products/`);
         setProductData(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
+      }finally {
+        setLoading(false);
       }
     };
     fetchProducts();
-  },[])
+  }, [])
 
 
 
@@ -91,7 +95,7 @@ const Product = () => {
         if (Response.status === 201) {
           // console.log("Product created successfully");
           console.log(Response.data)
-          setProductData(prev => [...prev , Response.data.product]);
+          setProductData(prev => [...prev, Response.data.product]);
         } else {
           console.error("Error creating product");
           setErrors({ submit: "Failed to create product. Please try again." });
@@ -260,10 +264,18 @@ const Product = () => {
 
       {/* Grid of Product Cards */}
       <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {productData &&
+        {loading ? (
+          // Render skeleton cards while loading
+          Array(8)
+            .fill()
+            .map((_, index) => <ProductCard key={`skeleton-${index}`} loading={true} />)
+        ) : (
+          // Render actual product cards when data is loaded
+          productData &&
           productData.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+            <ProductCard key={product._id} product={product} loading={false} />
+          ))
+        )}
       </div>
     </div>
   );

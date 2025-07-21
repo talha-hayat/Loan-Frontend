@@ -19,7 +19,8 @@ import { IsLogin } from './Route/Islogin'
 import { AuthGuard } from './Route/AuthGuard'
 import OtpVerification from './Pages/OtpVerification'
 import Product from './Pages/Product'
-import ProductCard from './components/LoanForm/ProductCard'
+import ProductDetail from './components/LoanForm/ProductDetail'
+// import ProductCard from './components/LoanForm/ProductCard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -35,6 +36,7 @@ function App() {
     <Route path='/about' element={<><Navbar/>,<About/>,<Footer/></>}></Route>  
     <Route path='/loanform' element={<><Navbar/>,<LoanForm />,<Footer/></>}></Route>  
     <Route path='/product' element={<><Navbar />,<Product/>,<Footer /></>} />
+    <Route path='/product/:id' element={<><Navbar/>,<ProductDetail/>,<Footer/></>}></Route>
     <Route path='/contactus' element={<><Navbar/>,<Contactus/>,<Footer/></>}></Route>  
   </Route>
 
