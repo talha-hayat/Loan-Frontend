@@ -31,7 +31,7 @@ const Home = () => {
         </p>
         <button className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition">
        
-                      <Link to={"/loanform"}>    Get started!</Link>
+                      <Link to={"/product"}>    Create Product!</Link>
           
         </button>
       </div>
