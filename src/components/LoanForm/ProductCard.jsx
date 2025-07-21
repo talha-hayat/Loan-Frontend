@@ -17,7 +17,11 @@ const ProductCard = ({ product }) => {
           <span className="text-lg font-bold text-green-600">
             PKR {product.price.toLocaleString()}
           </span>
+          
         </div>
+        <button className="px-4 py-2 mt-5 bg-green-500 text-white w-[100%] text-sm font-medium rounded-lg hover:bg-green-600 transition-colors duration-200">
+            See Details
+          </button>
       </div>
     </div>
   );
