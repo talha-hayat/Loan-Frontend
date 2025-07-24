@@ -30,8 +30,8 @@ const ProductDetail = () => {
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({});
   // const [imagePreview, setImagePreview] = useState(null);
-  // const [image, setImage] = useState(null);
-  // const [imageUrl, setImageUrl] = useState(null);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    console.log("Deleting product with ID:", id);
+    // console.log("Deleting product with ID:", id);
     try {
       const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}products/${id}`);
       if (res.status === 200) {
@@ -66,33 +66,57 @@ const ProductDetail = () => {
     }
   }
 
+  const handleImageChange = async (e) => {
+    // console.log("Image change");
+    const file = e.target.files[0];
+    setImage(file);
+    // console.log("Selected file:", file);
+
+  }
+
   const handleEdit = () => {
-    console.log("Editing product with ID:", id);
+    // console.log("Editing product with ID:", id);
     setModalOpen(true);
     setFormData({
       name: product.name,
       description: product.description,
       price: product.price,
-      // imageUrl: product.imageUrl, // Assuming you handle image upload separately
+      imageUrl: product.imageUrl, // Assuming you handle image upload separately
     });
 
   }
 
   const handleSave = async (e) => {
     e.preventDefault();
+      try {
+        let imgUrl = null;
+        const formdata = new FormData();
+        formdata.append("key", image)
+        const imageResponse = await axios.post(`${import.meta.env.VITE_BASE_URL}upload`, formdata);
+        imgUrl = imageResponse.data.ImageUrl;
+        setImageUrl(imgUrl);
+        // console.log("Image uploaded successfully:", imgUrl);
+        setFormData({ ...formData, imageUrl: imgUrl });
+
+      } catch (error) {
+        console.error("Error handling image change:", error);
+      }
+
+
+
     const updatedProduct = {
       ...product,
       name: formData.name || product.name,
       description: formData.description || product.description,
       price: formData.price || product.price,
-      // imageUrl: imageUrl || product.imageUrl, // Assuming you handle image upload separately
+      imageUrl: formData.imageUrl || product.imageUrl, // Assuming you handle image upload separately
     };
     // console.log("Saving product:", updatedProduct);
     try {
       const res = await axios.put(`${import.meta.env.VITE_BASE_URL}products/${id}`, updatedProduct);
       if (res.status === 200) {
         setProduct(res.data.product);
-        console.log("Product updated successfully:", res.data.product);
+        // console.log("Product updated successfully:", res.data.product);
         setModalOpen(false);
         alert("Product updated successfully");
         // Optionally, you can redirect or refresh the product detail
@@ -181,7 +205,7 @@ const ProductDetail = () => {
                     id="image"
                     name="image"
                     accept="image/*"
-                    // onChange={handleImageChange}
+                    onChange={handleImageChange}
                     className="hidden"
                   />
                   <label htmlFor="image" className="cursor-pointer">

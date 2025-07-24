@@ -137,20 +137,15 @@ const Product = () => {
 
   const handleSearch = (value) => {
     setSearch(value);
-    // if (value.trim() === "") {
-    //   setFilteredProducts(productData);
-    // } else {
-    //   const filtered = productData.filter((product) =>
-    //     product.name.toLowerCase().includes(value.toLowerCase())
-    //   );
-    //   setFilteredProducts(filtered);
-    // }
-    console.log(search);   
+    // console.log(search);   
   };
 
-  const filteredProducts = productData.filter(product =>(
+  const filteredProducts = productData.filter(product => (
     product.name.includes(search)
+
   ))
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
@@ -163,7 +158,7 @@ const Product = () => {
                 type="text"
                 placeholder="Search products..."
                 value={search}
-                onChange={(e)=> handleSearch(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
                 className="w-full px-4 py-2 sm:py-3 text-sm sm:text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               {/* <button
@@ -388,18 +383,18 @@ const Product = () => {
               .map((_, index) => (
                 <ProductCard key={`skeleton-${index}`} loading={true} />
               ))
-          ) : (
-            // Render actual product cards when data is loaded
-            // filteredProducts.length > 0
-            //   ? console.log("Filtered Products:", filteredProducts) &&
-            //   filteredProducts.map((product) => (
-            //       <ProductCard key={product._id} product={product} loading={false} />
-            //     ))
-            //   :
-            filteredProducts &&
+          ) 
+          : 
+          filteredProducts && filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <ProductCard key={product._id} product={product} loading={false} />
             ))
+          ) 
+          : 
+          (
+            <div className="col-span-full text-center text-gray-600 text-lg font-medium mt-4">
+              Product not found
+            </div>
           )}
         </div>
       )}
